@@ -1,4 +1,5 @@
 import React from "react";
+import { ALIVE } from "@/lib/grid";
 import type { Grid as GridType } from "@/lib/grid";
 
 interface GridProps {
@@ -20,12 +21,14 @@ export const Grid: React.FC<GridProps> = ({ grid, onCellClick }) => {
       }}
     >
       {grid.map((row, rowIdx) =>
-        row.map((cell, colIdx) => (
+        row.map((cellValue, colIdx) => (
           <div
             key={`${rowIdx}-${colIdx}`}
-            className={`w-full h-full rounded-sm border border-gray-300 transition-colors duration-200 cursor-pointer ${
-              cell ? "bg-black" : "bg-white"
-            } hover:ring-2 hover:ring-blue-400`}
+            className={[
+              `w-full h-full rounded-sm border border-gray-300 transition-colors duration-200 cursor-pointer`,
+              cellValue === ALIVE ? "bg-black" : "bg-white",
+              `hover:ring-2 hover:ring-blue-400`,
+            ].join(" ")}
             onClick={() => onCellClick?.(rowIdx, colIdx)}
           />
         )),

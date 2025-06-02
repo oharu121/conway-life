@@ -2,8 +2,8 @@ export type GridState = 1 | 0;
 export type Grid = GridState[][];
 
 const GRID_LENGTH = 10;
-const ALIVE = 1;
-const DEAD = 0;
+export const ALIVE = 1;
+export const DEAD = 0;
 
 // external functions
 export function createRandomGrid(): Grid {
@@ -46,6 +46,7 @@ export function getNextGrid(currentGrid: Grid): Grid {
     }
   }
 
+  console.log(nextGrid);
   return nextGrid;
 }
 
