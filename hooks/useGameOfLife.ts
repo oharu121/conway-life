@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { createRandomGrid, getNextGrid, toggleCell } from "@/lib/grid";
 import type { Grid } from "@/lib/grid";
 
@@ -27,34 +27,34 @@ export function useGameOfLife() {
   const [isRunning, setIsRunning] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  const handleNextGeneration = () => {
+  const handleNextGeneration = useCallback(() => {
     setPreviousGrid(grid.map((row) => [...row])); // Deep copy
     setGrid((prev) => getNextGrid(prev));
     setGeneration((g) => g + 1);
-  };
+  }, [grid]);
 
-  const handleReset = () => {
+  const handleReset = useCallback(() => {
     setGrid(createRandomGrid());
     setGeneration(0);
     setPreviousGrid(null);
     setIsRunning(false);
-  };
+  }, []);
 
-  const handleToggleCell = (row: number, col: number) => {
+  const handleToggleCell = useCallback((row: number, col: number) => {
     setGrid((prev) => toggleCell(prev, row, col));
-  };
+  }, []);
 
-  const handlePrevious = () => {
+  const handlePrevious = useCallback(() => {
     if (previousGrid) {
       setGrid(previousGrid.map((row) => [...row]));
       setGeneration((prev) => (prev > 0 ? prev - 1 : 0));
       setPreviousGrid(null); // Only allow one step back
     }
-  };
+  }, [previousGrid]);
 
-  const handlePlayToggle = () => {
+  const handlePlayToggle = useCallback(() => {
     setIsRunning((prev) => !prev);
-  };
+  }, []);
 
   useEffect(() => {
     if (isRunning) {
@@ -72,7 +72,7 @@ export function useGameOfLife() {
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isRunning, grid]);
+  }, [isRunning, handleNextGeneration]);
 
   return {
     grid,

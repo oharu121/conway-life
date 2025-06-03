@@ -7,7 +7,7 @@ interface GridProps {
   onCellClick?: (row: number, col: number) => void;
 }
 
-export const Grid: React.FC<GridProps> = ({ grid, onCellClick }) => {
+const GridComponent: React.FC<GridProps> = ({ grid, onCellClick }) => {
   const numRows = grid.length;
   const numCols = grid[0]?.length || 0;
 
@@ -25,7 +25,8 @@ export const Grid: React.FC<GridProps> = ({ grid, onCellClick }) => {
           <div
             key={`${rowIdx}-${colIdx}`}
             className={[
-              `w-full h-full rounded-sm border border-gray-300 transition-colors duration-200 cursor-pointer`,
+              `w-full h-full rounded-sm border cursor-pointer`,
+              `border-gray-300 transition-colors duration-200 `,
               cellValue === ALIVE ? "bg-black" : "bg-white",
               `hover:ring-2 hover:ring-blue-400`,
             ].join(" ")}
@@ -36,3 +37,5 @@ export const Grid: React.FC<GridProps> = ({ grid, onCellClick }) => {
     </div>
   );
 };
+
+export const Grid = React.memo(GridComponent);
